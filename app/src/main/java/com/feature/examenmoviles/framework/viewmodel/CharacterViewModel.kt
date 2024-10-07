@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.feature.examenmoviles.GetCharactersUseCase
 import com.feature.examenmoviles.data.CharacterRepository
 import com.feature.examenmoviles.data.Repository
+import com.feature.examenmoviles.data.network.APIClient
 import com.feature.examenmoviles.data.network.DragonBallAPIService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

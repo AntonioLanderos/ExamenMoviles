@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".framework.views.CharacterDetailActivity">
 
+    <!-- Imagen del personaje -->
     <ImageView
         android:id="@+id/character_image"
         android:layout_width="120dp"
@@ -16,6 +17,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/character_image" />
 
+    <!-- Nombre del personaje -->
     <TextView
         android:id="@+id/character_name"
         android:layout_width="0dp"
@@ -28,6 +30,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp" />
 
+    <!-- Afiliación -->
     <TextView
         android:id="@+id/character_affiliation"
         android:layout_width="0dp"
@@ -38,44 +41,85 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp" />
 
+    <!-- Ki -->
     <TextView
         android:id="@+id/character_ki"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/character_affiliation"
         app:layout_constraintStart_toEndOf="@id/character_image"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp" />
 
+    <!-- Max Ki -->
     <TextView
-        android:id="@+id/character_origin_planet"
+        android:id="@+id/character_max_ki"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/character_ki"
         app:layout_constraintStart_toEndOf="@id/character_image"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp" />
 
+    <!-- Raza -->
+    <TextView
+        android:id="@+id/character_race"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/character_max_ki"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <!-- Género -->
+    <TextView
+        android:id="@+id/character_gender"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/character_race"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <!-- Descripción -->
+    <TextView
+        android:id="@+id/character_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/character_gender"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <!-- Planeta de origen -->
+    <TextView
+        android:id="@+id/character_origin_planet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/character_description"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <!-- Descripción del planeta -->
     <TextView
         android:id="@+id/character_origin_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/character_origin_planet"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/character_image"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginStart="16dp" />
 
+    <!-- Estado del planeta -->
     <TextView
         android:id="@+id/planet_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/character_origin_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

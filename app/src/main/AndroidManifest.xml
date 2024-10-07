@@ -26,5 +26,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".framework.views.CharacterDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ExamenMoviles" />
+
     </application>
 </manifest>
