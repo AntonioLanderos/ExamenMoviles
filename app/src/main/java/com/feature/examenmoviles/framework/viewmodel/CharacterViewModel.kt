@@ -1,27 +1,21 @@
 package com.feature.examenmoviles.framework.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.feature.examenmoviles.GetCharactersUseCase
 import com.feature.examenmoviles.data.CharacterRepository
-import com.feature.examenmoviles.data.Repository
-import com.feature.examenmoviles.data.network.APIClient
-import com.feature.examenmoviles.data.network.DragonBallAPIService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import com.feature.examenmoviles.framework.model.CharacterResponse
 import com.feature.examenmoviles.framework.model.DBCharacter
+import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
 
-    private val _characters = MutableLiveData<List<DBCharacter>?>()
-    val characters: MutableLiveData<List<DBCharacter>?> get() = _characters
+    // Lista original completa de personajes
+    private val _originalCharacters = mutableListOf<DBCharacter>()
+
+    // Lista filtrada que observa la UI
+    private val _filteredCharacters = MutableLiveData<List<DBCharacter>?>()
+    val filteredCharacters: LiveData<List<DBCharacter>?> get() = _filteredCharacters
 
     // Cargar todas las páginas de personajes
     fun fetchAllCharacters() {
@@ -40,8 +34,10 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
                 if (response.meta.currentPage < response.meta.totalPages) {
                     fetchPage(page + 1, allCharacters)  // Llama recursivamente para la siguiente página
                 } else {
-                    // Cuando se hayan cargado todas las páginas, actualiza el LiveData
-                    _characters.postValue(allCharacters)
+                    // Cuando se hayan cargado todas las páginas, guarda la lista original
+                    _originalCharacters.addAll(allCharacters)
+                    // Actualiza el LiveData con la lista completa
+                    _filteredCharacters.postValue(_originalCharacters)
                 }
             } catch (e: Exception) {
                 // Manejar el error en caso de que ocurra
@@ -49,15 +45,15 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
         }
     }
 
-    // Filtrar personajes por raza y afiliación
-    fun applyFilters(filters: Map<String, String>) {
+    // Aplicar filtro por raza y afiliación
+    fun applyFilters(selectedRace: String?, selectedAffiliation: String?) {
         viewModelScope.launch {
-            val filteredCharacters = _characters.value?.filter { character ->
-                val matchesRace = filters["race"]?.let { character.race.contains(it, ignoreCase = true) } ?: true
-                val matchesAffiliation = filters["affiliation"]?.let { character.affiliation.contains(it, ignoreCase = true) } ?: true
+            val filteredList = _originalCharacters.filter { character ->
+                val matchesRace = selectedRace?.let { character.race.contains(it, ignoreCase = true) } ?: true
+                val matchesAffiliation = selectedAffiliation?.let { character.affiliation.contains(it, ignoreCase = true) } ?: true
                 matchesRace && matchesAffiliation
             }
-            _characters.postValue(filteredCharacters)
+            _filteredCharacters.postValue(filteredList)
         }
     }
 }

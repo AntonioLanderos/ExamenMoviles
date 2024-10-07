@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         // Configurar los filtros
         setupFilters()
 
-        // Observa los cambios en los personajes
-        viewModel.characters.observe(this) { characters ->
+        // Observa los cambios en los personajes filtrados
+        viewModel.filteredCharacters.observe(this) { characters ->
             if (characters != null) {
                 adapter.updateData(characters)
             }
@@ -64,14 +64,14 @@ class MainActivity : AppCompatActivity() {
             selectedAffiliation = binding.spinnerAffiliation.selectedItem.toString()
 
             // Aplicar filtros en función de la raza y afiliación seleccionadas
-            applyFilters(selectedRace!!, selectedAffiliation!!)
+            applyFilters(selectedRace, selectedAffiliation)
         }
     }
 
     // Método para configurar los filtros con Spinner
     private fun setupFilters() {
-        val raceOptions = listOf("Saiyan", "Human", "Namekian", "Frieza Race", "Android", "Other")
-        val affiliationOptions = listOf("Z Fighter", "Army of Frieza", "Freelancer", "Other")
+        val raceOptions = listOf("All", "Saiyan", "Human", "Namekian", "Frieza Race", "Android", "Other")
+        val affiliationOptions = listOf("All", "Z Fighter", "Army of Frieza", "Freelancer", "Other")
 
         // Configurar el adaptador del Spinner de razas
         val raceAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, raceOptions)
@@ -85,10 +85,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Método para aplicar los filtros de raza y afiliación
-    private fun applyFilters(race: String, affiliation: String) {
-        val filters = mapOf("race" to race, "affiliation" to affiliation)
+    private fun applyFilters(selectedRace: String?, selectedAffiliation: String?) {
+        val raceFilter = if (selectedRace == "All") null else selectedRace
+        val affiliationFilter = if (selectedAffiliation == "All") null else selectedAffiliation
 
         // Filtrar los personajes utilizando los filtros seleccionados
-        viewModel.applyFilters(filters)
+        viewModel.applyFilters(raceFilter, affiliationFilter)
     }
 }
