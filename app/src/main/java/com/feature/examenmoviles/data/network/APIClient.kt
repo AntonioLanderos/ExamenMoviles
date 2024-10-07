@@ -1,16 +1,16 @@
 package com.feature.examenmoviles.data.network
 
-class APIClient {
-    private lateinit var api: APIService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-    suspend fun getSomething(parameter: String): String? {
-        api = NetworkModuleDI()
-        return try {
-            api.getSomething(parameter)
-        } catch (e: Exception) { // Catch other exceptions
-            e.printStackTrace()
-            null
-        }
+object APIClient {
+    private const val BASE_URL = "https://dragonball-api.com/api/"
+
+    val api: DragonBallAPIService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DragonBallAPIService::class.java)
     }
-
 }

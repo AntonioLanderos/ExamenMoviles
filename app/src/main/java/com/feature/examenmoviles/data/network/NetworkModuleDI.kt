@@ -6,15 +6,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModuleDI {
-    private val okHttpClient: OkHttpClient = OkHttpClient()
-    private val gsonFactory: GsonConverterFactory = GsonConverterFactory.create()
 
-    operator fun invoke(): APIService {
-        return Retrofit.Builder()
+    fun provideDragonBallApi(): DragonBallAPIService {
+        val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(gsonFactory)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(APIService::class.java)
+
+        return retrofit.create(DragonBallAPIService::class.java)
     }
 }
