@@ -18,5 +18,8 @@ interface DragonBallAPIService {
         @Query("gender") gender: String? = null,
         @Query("affiliation") affiliation: String? = null
     ): List<DBCharacter>
+
+    @GET("characters/{id}")
+    suspend fun getCharacterById(id: Int): DBCharacter
 }
 

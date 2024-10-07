@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,8 +9,8 @@
     <ImageView
         android:id="@+id/character_image"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/character_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -33,6 +34,27 @@
         app:layout_constraintTop_toBottomOf="@id/character_name"
         app:layout_constraintStart_toEndOf="@id/character_image"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/character_ki"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/character_affiliation"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/character_origin_planet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/character_ki"
+        app:layout_constraintStart_toEndOf="@id/character_image"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

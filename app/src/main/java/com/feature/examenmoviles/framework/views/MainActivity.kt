@@ -1,43 +1,94 @@
 package com.feature.examenmoviles.framework.views
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.feature.examenmoviles.GetCharactersUseCase
 import com.feature.examenmoviles.R
 import com.feature.examenmoviles.data.CharacterRepository
 import com.feature.examenmoviles.data.network.APIClient
-import com.feature.examenmoviles.data.network.DragonBallAPIService
-import com.feature.examenmoviles.data.network.NetworkModuleDI
 import com.feature.examenmoviles.databinding.ActivityMainBinding
 import com.feature.examenmoviles.framework.viewmodel.CharacterViewModel
 import com.feature.examenmoviles.framework.viewmodel.CharacterViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private val repository = CharacterRepository(APIClient.api)
     private val viewModel: CharacterViewModel by viewModels {
         CharacterViewModelFactory(repository)
     }
 
+    private var selectedRace: String? = null
+    private var selectedAffiliation: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        // Configurar RecyclerView
         val adapter = CharacterAdapter(listOf())
-        val recyclerView = findViewById<RecyclerView>(R.id.character_list)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        binding.characterList.layoutManager = LinearLayoutManager(this)
+        binding.characterList.adapter = adapter
 
-        viewModel.characters.observe(this, { characters ->
-            Log.d("MainActivity", "Number of characters: ${characters.size}")
-            adapter.updateData(characters)  // Asegúrate de tener este método en tu adaptador
-        })
+        // Configurar los filtros
+        setupFilters()
 
-        viewModel.fetchCharacters(1)
+        // Observa los cambios en los personajes
+        viewModel.characters.observe(this) { characters ->
+            if (characters != null) {
+                adapter.updateData(characters)
+            }
+
+            // Mantener el filtro seleccionado en los Spinners
+            selectedRace?.let {
+                val racePosition = (binding.spinnerRace.adapter as ArrayAdapter<String>).getPosition(it)
+                binding.spinnerRace.setSelection(racePosition)
+            }
+
+            selectedAffiliation?.let {
+                val affiliationPosition = (binding.spinnerAffiliation.adapter as ArrayAdapter<String>).getPosition(it)
+                binding.spinnerAffiliation.setSelection(affiliationPosition)
+            }
+        }
+
+        // Cargar todos los personajes (sin límite de página)
+        viewModel.fetchAllCharacters()
+
+        // Acción del botón para aplicar los filtros
+        binding.buttonApplyFilter.setOnClickListener {
+            selectedRace = binding.spinnerRace.selectedItem.toString()
+            selectedAffiliation = binding.spinnerAffiliation.selectedItem.toString()
+
+            // Aplicar filtros en función de la raza y afiliación seleccionadas
+            applyFilters(selectedRace!!, selectedAffiliation!!)
+        }
+    }
+
+    // Método para configurar los filtros con Spinner
+    private fun setupFilters() {
+        val raceOptions = listOf("Saiyan", "Human", "Namekian", "Frieza Race", "Android", "Other")
+        val affiliationOptions = listOf("Z Fighter", "Army of Frieza", "Freelancer", "Other")
+
+        // Configurar el adaptador del Spinner de razas
+        val raceAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, raceOptions)
+        raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerRace.adapter = raceAdapter
+
+        // Configurar el adaptador del Spinner de afiliaciones
+        val affiliationAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, affiliationOptions)
+        affiliationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerAffiliation.adapter = affiliationAdapter
+    }
+
+    // Método para aplicar los filtros de raza y afiliación
+    private fun applyFilters(race: String, affiliation: String) {
+        val filters = mapOf("race" to race, "affiliation" to affiliation)
+
+        // Filtrar los personajes utilizando los filtros seleccionados
+        viewModel.applyFilters(filters)
     }
 }

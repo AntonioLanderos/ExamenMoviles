@@ -3,5 +3,14 @@
     <string name="title">Title</string>
     <string name="character_image">Character Image</string>
     <string name="character_name">Character Name</string>
+    <string name="character_affiliation">Character Affiliation</string>
+    <string name="character_ki">Character Ki</string>
+    <string name="character_origin_planet">Character Origin Planet</string>
+    <string name="character_origin_description">Character Origin Description</string>
+    <string name="planet_status">Planet Status</string>
+
+    <string name="filter_race_prompt">Select a race</string>
+    <string name="filter_affiliation_prompt">Select an affiliation</string>
+    <string name="filter_button_text">Apply Filter</string>
 </resources>
 

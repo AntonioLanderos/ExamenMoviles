@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Colores principales -->
+    <color name="black">#000000</color> <!-- Color principal negro -->
+    <color name="orange_dragon_ball">#FF6A00</color> <!-- Naranja, inspirado en el logo de Dragon Ball -->
+    <color name="blue_dragon_ball">#3F51B5</color> <!-- Azul, inspirado en el traje de Goku -->
+    <color name="yellow_dragon_ball">#FFD700</color> <!-- Amarillo, inspirado en el pelo Super Saiyan -->
+    <color name="red_dragon_ball">#D32F2F</color> <!-- Rojo, inspirado en el emblema de Kame -->
+
+    <!-- Colores de texto -->
+    <color name="white">#FFFFFF</color>
+    <color name="text_secondary">#BDBDBD</color> <!-- Gris claro para texto secundario -->
 </resources>

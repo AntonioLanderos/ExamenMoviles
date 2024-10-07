@@ -67,4 +67,6 @@ dependencies {
     //Data binding
     implementation(libs.androidx.databinding.runtime)
 
+    //Constraint Layout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
 }

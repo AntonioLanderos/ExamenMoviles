@@ -19,23 +19,44 @@ import com.feature.examenmoviles.framework.model.DBCharacter
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {
 
-    val characters = MutableLiveData<List<DBCharacter>>()
+    private val _characters = MutableLiveData<List<DBCharacter>?>()
+    val characters: MutableLiveData<List<DBCharacter>?> get() = _characters
 
-    fun fetchCharacters(page: Int) {
+    // Cargar todas las páginas de personajes
+    fun fetchAllCharacters() {
+        val allCharacters = mutableListOf<DBCharacter>()
+        fetchPage(1, allCharacters)
+    }
+
+    private fun fetchPage(page: Int, allCharacters: MutableList<DBCharacter>) {
         viewModelScope.launch {
             try {
                 val response = repository.getCharacters(page)
-                Log.d("CharacterViewModel", "Characters fetched: ${response.items.size}")
-                characters.value = response.items
+                val characters = response.items
+                allCharacters.addAll(characters)
+
+                // Si no estamos en la última página, sigue cargando la siguiente página
+                if (response.meta.currentPage < response.meta.totalPages) {
+                    fetchPage(page + 1, allCharacters)  // Llama recursivamente para la siguiente página
+                } else {
+                    // Cuando se hayan cargado todas las páginas, actualiza el LiveData
+                    _characters.postValue(allCharacters)
+                }
             } catch (e: Exception) {
-                Log.e("CharacterViewModel", "Error fetching characters", e)
+                // Manejar el error en caso de que ocurra
             }
         }
     }
 
+    // Filtrar personajes por raza y afiliación
     fun applyFilters(filters: Map<String, String>) {
         viewModelScope.launch {
-            characters.value = repository.getFilteredCharacters(filters)
+            val filteredCharacters = _characters.value?.filter { character ->
+                val matchesRace = filters["race"]?.let { character.race.contains(it, ignoreCase = true) } ?: true
+                val matchesAffiliation = filters["affiliation"]?.let { character.affiliation.contains(it, ignoreCase = true) } ?: true
+                matchesRace && matchesAffiliation
+            }
+            _characters.postValue(filteredCharacters)
         }
     }
 }
